@@ -1,0 +1,4 @@
+pynput
+
+# Building requires:
+PyInstall
