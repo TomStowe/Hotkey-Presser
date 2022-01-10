@@ -46,10 +46,24 @@ keyConversions = {
 # Setup the arguments
 parser = argparse.ArgumentParser(description="Press the keys for a hotkey")
 parser.add_argument("keycombo", type=str, help="The hotkey to use, where each key is separated by a + sign.\nAll letters and numbers are available to use in addition to the following keys: \"" + ', '.join(keyConversions.keys()) + "\"")
+parser.add_argument("--mouseX", type=int, help="The x position to move the mouse to before executing the shotcut")
+parser.add_argument("--mouseY", type=int, help="The y position to move the mouse to before executing the shotcut")
 args = parser.parse_args()
 
 # Setup the controller
 keyboard = Controller()
+
+# If only mouse x or y have been pressed, error
+if (not ((args.mouseX == None and args.mouseY == None) or (args.mouseX != None and args.mouseY != None))):
+    print("Both the mouseX and mouseY arguments must be supplied. Quitting")
+    quit()
+    
+# If both mouse positions have been supplied, move the mouse
+if (args.mouseX != None and args.mouseY != None):
+    from pynput.mouse import Controller as MouseController
+    mouse = MouseController()
+    mouse.position = (args.mouseX, args.mouseY)
+
 
 """
     Convert a string to a key value
